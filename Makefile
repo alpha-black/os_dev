@@ -21,7 +21,7 @@ rOs.iso: kernel.elf
 				-input-charset utf8				\
 				-quiet							\
 				-boot-info-table				\
-				-o rOs.iso						\
+				-o iso/rOs.iso					\
 				iso
 
 run: rOs.iso
