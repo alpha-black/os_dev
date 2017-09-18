@@ -12,7 +12,7 @@ kernel.elf: $(OBJECTS)
 	ld $(LDFLAGS) $(OBJECTS) -o kernel.elf
 
 rOs.iso: kernel.elf
-	cp kernel.elf iso/boot/kernel.elf
+	mv kernel.elf iso/boot/kernel.elf
 	genisoimage -R								\
 				-b boot/grub/stage2_eltorito	\
 				-no-emul-boot					\
@@ -25,7 +25,7 @@ rOs.iso: kernel.elf
 				iso
 
 run: rOs.iso
-	bochs -f bochsrc.txt -q
+	bochs -f iso/bochsrc.txt -q
 
 %.o: %.c
 	$(CC) $(CFLAGS) $< -o $@
@@ -34,4 +34,4 @@ run: rOs.iso
 	$(AS) $(ASFLAGS) $< -o $@
 
 clean:
-	rm -rf *.o kernel.elf os.iso
+	rm -rf *.o iso/boot/kernel.elf iso/rOs.iso
