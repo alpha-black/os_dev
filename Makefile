@@ -1,8 +1,8 @@
-OBJECTS = loader.o kmain.o io.o
+OBJECTS = src/loader.o src/kmain.o src/io.o
 CC = gcc
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		-nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
-LDFLAGS = -T link.ld -melf_i386
+LDFLAGS = -T src/link.ld -melf_i386
 AS = nasm
 ASFLAGS = -f elf
 
@@ -27,11 +27,11 @@ rOs.iso: kernel.elf
 run: rOs.iso
 	bochs -f iso/bochsrc.txt -q
 
-%.o: %.c
-	$(CC) $(CFLAGS) $< -o $@
+%.o: src/%.c
+	$(CC) $(CFLAGS) $< -o src/$@
 
-%.o: %.s
-	$(AS) $(ASFLAGS) $< -o $@
+%.o: src/%.s
+	$(AS) $(ASFLAGS) $< -o src/$@
 
 clean:
-	rm -rf *.o iso/boot/kernel.elf iso/rOs.iso
+	rm -rf src/*.o iso/boot/kernel.elf iso/rOs.iso
