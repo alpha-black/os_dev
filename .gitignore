@@ -53,3 +53,5 @@ dkms.conf
 
 *.log
 *.iso
+
+.DS_Store
