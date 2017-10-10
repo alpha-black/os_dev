@@ -55,3 +55,7 @@ dkms.conf
 *.iso
 
 .DS_Store
+
+booksurvey.pdf
+LinuxKernelDevelopment.pdf
+The\ Linux\ Programming\ Interface-Michael\ Kerrisk.pdf

@@ -75,12 +75,13 @@ int kprintf(const char * message, int pos)
     return pos+i;
 }
 
-int kmain(int arg1)
+int kmain(void)
 {
-    int fb_cursor_pos = kprintf("Welcome!", 0);
+    /* int fb_cursor_pos = */ kprintf("Welcome!", 0);
 
     while(serial_check_buffer(SERIAL_COM1_BASE) == 0);
     serial_write(SERIAL_COM1_BASE, 0x30);
 
-    return arg1+0x1+fb_cursor_pos;
+    //return arg1+0x1+fb_cursor_pos;
+    return 0xDEADBABA;
 }
