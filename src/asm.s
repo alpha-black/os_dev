@@ -3,6 +3,8 @@ global inb
 global gdt_flush
 global idt_flush
 
+global trigger_int
+
 ; data - unsigned char  [esp + ]
 ; port - unsigned short [esp + ]
 
@@ -38,4 +40,9 @@ gdt_flush:
 idt_flush:
     mov eax, [esp + 4]
     lidt [eax]
+    ret
+
+
+trigger_int:
+    int 0x0
     ret

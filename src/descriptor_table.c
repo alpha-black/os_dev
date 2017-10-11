@@ -1,6 +1,11 @@
 #include "asm.h"
 #include "common.h"
 
+struct gdt_entry gdt_entries[5];
+struct gdt gdt_ptr;
+struct idt_entry idt_entries[256];
+struct idt idt_ptr;
+
 static void gdt_set_entry(struct gdt_entry * entry, unsigned int limit, unsigned int base,
                           unsigned char access, unsigned char granularity)
 {
@@ -15,8 +20,6 @@ static void gdt_set_entry(struct gdt_entry * entry, unsigned int limit, unsigned
 
 static void gdt_init()
 {
-    struct gdt_entry gdt_entries[5];
-    struct gdt gdt_ptr;
 
     gdt_set_entry(&gdt_entries[0], 0, 0, 0, 0);                  /* Null segment */
     gdt_set_entry(&gdt_entries[1], 0xFFFFFF, 0, 0x9A, 0xCF);     /* Kernel code segment */
@@ -42,8 +45,6 @@ static void idt_set_gate(struct idt_entry * entry, unsigned int offset, unsigned
 
 static void idt_init()
 {
-    struct idt_entry idt_entries[256];
-    struct idt idt_ptr;
 
     /* Code segment at 0x08, 0x8E (P=1, DPL=00b, S=0, type=1110b) */
     idt_set_gate(&idt_entries[0], (unsigned int)isr0, 0x08, 0x8E);

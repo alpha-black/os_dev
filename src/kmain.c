@@ -29,15 +29,13 @@ int kprintf(const char * message, int pos)
 
 int kmain(void)
 {
+    descriptor_tables_init();
     int fb_cursor_pos = kprintf("Welcome!", 0);
     serial_init();
     serial_write(SERIAL_COM1_BASE, 0x30);
-
-    descriptor_tables_init();
-
     fb_cursor_pos = kprintf("GDT/IDT initialized", fb_cursor_pos);
-    asm volatile ("int $0x2");
-    asm volatile ("int $0x4");
+    trigger_int();
+    kprintf("Interrupts triggered", fb_cursor_pos);
 
     return 0xDEADBABA;
 }

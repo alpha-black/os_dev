@@ -12,4 +12,6 @@ extern void idt_flush(unsigned int);
 
 extern void isr0();
 
+extern void trigger_int();
+
 #endif /* _INCLUDE_ASM_H_ */
