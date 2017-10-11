@@ -36,6 +36,8 @@ int kmain(void)
     descriptor_tables_init();
 
     fb_cursor_pos = kprintf("GDT/IDT initialized", fb_cursor_pos);
+    asm volatile ("int $0x2");
+    asm volatile ("int $0x4");
 
     return 0xDEADBABA;
 }

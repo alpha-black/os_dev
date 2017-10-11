@@ -11,6 +11,8 @@
 #define FB_TYPE_LOWER_BITS                  15
 
 
+int kprintf(const char * message, int pos);
+
 /****************************************************
  *  Serial Port
  *
@@ -40,7 +42,7 @@ struct gdt_entry {
     unsigned short  limit_low;           // The lower 16 bits of the limit.
     unsigned short  base_low;            // The lower 16 bits of the base.
     unsigned char   base_middle;         // The next 8 bits of the base.
-    unsigned char   access;              // Access flags, determine what ring this segment can be used in.
+    unsigned char   access;              // Access flags, privilage
     unsigned char   granularity;
     unsigned char   base_high;           // The last 8 bits of the base.
 }__attribute__((packed));
@@ -48,7 +50,7 @@ struct gdt_entry {
 
 /****************************************************
  *  IDT
- *
+ *  http://wiki.osdev.org/Interrupt_Descriptor_Table
  ****************************************************/
 struct idt {
     unsigned short  limit;
@@ -57,20 +59,31 @@ struct idt {
 
 
 struct idt_entry {
-struct idt_entry_struct
-{
-    unsigned short  base_lo;    // The lower 16 bits of the address to jump to when this interrupt fires.
-    unsigned short  sel;        // Kernel segment selector.
-    unsigned char   always0;    // This must always be zero.
-    unsigned char   flags;      // More flags.
-    unsigned short  base_hi;    // The upper 16 bits of the address to jump to.
+    unsigned short  offset_low;         // The lower 16 bits of the GDT selector.
+    unsigned short  selector;           // Kernel segment selector in GDT.
+    unsigned char   unused;             // Unused. Set to 0.
+    unsigned char   flags;              // Type and attribute. Privilage set here
+    unsigned short  offset_high;        // The upper 16 bits of GDT selector.
 }__attribute__((packed));
 
 
 /****************************************************
- *  DT
+ *  Descriptor Table init
  *
  ****************************************************/
 void descriptor_tables_init();
+
+/****************************************************
+ *  ISR
+ *  From James Malloy
+ ****************************************************/
+struct isr_registers {
+    unsigned int ds;                                        /* Data segment selector */
+    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;    /* Other registers. */
+    unsigned int int_no, err_code;
+    unsigned int eip, cs, eflags, useresp, ss;              /* Pushed by the processor. */
+}__attribute__((packed));
+
+void isr_handler(struct isr_registers reg);
 
 #endif /* __COMMON_H__ */

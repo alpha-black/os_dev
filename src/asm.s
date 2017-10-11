@@ -1,6 +1,7 @@
 global outb                                         ; Refernced from C
 global inb
 global gdt_flush
+global idt_flush
 
 ; data - unsigned char  [esp + ]
 ; port - unsigned short [esp + ]
@@ -31,4 +32,10 @@ gdt_flush:
 
     jmp 0x08:.flush                             ; Far jump for code segment. It is at 8 bytes
 .flush:
+    ret
+
+
+idt_flush:
+    mov eax, [esp + 4]
+    lidt [eax]
     ret

@@ -1,4 +1,4 @@
-OBJECTS = src/loader.o src/kmain.o src/asm.o src/serial.o src/descriptor_table.o
+OBJECTS = src/loader.o src/kmain.o src/asm.o src/serial.o src/descriptor_table.o src/interrupt.o src/isr.o
 CC = gcc
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		-nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c

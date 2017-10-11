@@ -30,15 +30,33 @@ static void gdt_init()
     gdt_flush((unsigned int)&gdt_ptr);
 }
 
+static void idt_set_gate(struct idt_entry * entry, unsigned int offset, unsigned short selector,
+                         unsigned char flag)
+{
+    entry->offset_low = offset & 0xFFFF;
+    entry->offset_high = (offset >> 16) & 0xFFFF;
+    entry->selector = selector;
+    entry->unused = 0x00;
+    entry->flags = flag;
+}
+
 static void idt_init()
 {
+    struct idt_entry idt_entries[256];
+    struct idt idt_ptr;
 
+    /* Code segment at 0x08, 0x8E (P=1, DPL=00b, S=0, type=1110b) */
+    idt_set_gate(&idt_entries[0], (unsigned int)isr0, 0x08, 0x8E);
+
+    idt_ptr.base = (unsigned int)idt_entries;
+    idt_ptr.limit = 8*256 - 1;
+
+    idt_flush((unsigned int)&idt_ptr);
 }
 
 
 void descriptor_tables_init()
 {
     gdt_init();
-
     idt_init();
 }
