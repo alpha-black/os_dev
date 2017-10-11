@@ -1,3 +1,4 @@
+; Macro for defining all the interrupts. Taken from James Malloy
 %macro ISR_NOERROR_CODE 1
     global isr%1
     isr%1:
