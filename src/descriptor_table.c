@@ -13,7 +13,7 @@ static void gdt_set_entry(struct gdt_entry * entry, unsigned int limit, unsigned
     entry->granularity |= granularity & 0xF0;
 }
 
-void gdt_init()
+static void gdt_init()
 {
     struct gdt_entry gdt_entries[5];
     struct gdt gdt_ptr;
@@ -28,4 +28,17 @@ void gdt_init()
     gdt_ptr.limit = 8*5 - 1;                                     /* GDT entries are 8 bytes long */
 
     gdt_flush((unsigned int)&gdt_ptr);
+}
+
+static void idt_init()
+{
+
+}
+
+
+void descriptor_tables_init()
+{
+    gdt_init();
+
+    idt_init();
 }

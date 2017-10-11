@@ -20,7 +20,7 @@ int kprintf(const char * message, int pos)
 {
     int i = 0;
     while(*(message+i) != '\0') {
-        framebuffer_write_cell(i, message[i], 0x02, 0x08);
+        framebuffer_write_cell(pos+i, message[i], 0x02, 0x08);
         i++;
     }
     framebuffer_move_cursor(pos+i);
@@ -29,11 +29,13 @@ int kprintf(const char * message, int pos)
 
 int kmain(void)
 {
-    /* int fb_cursor_pos = */ kprintf("Welcome!", 0);
+    int fb_cursor_pos = kprintf("Welcome!", 0);
     serial_init();
     serial_write(SERIAL_COM1_BASE, 0x30);
 
-    gdt_init();
+    descriptor_tables_init();
+
+    fb_cursor_pos = kprintf("GDT/IDT initialized", fb_cursor_pos);
 
     return 0xDEADBABA;
 }

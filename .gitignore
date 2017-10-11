@@ -56,6 +56,9 @@ dkms.conf
 
 .DS_Store
 
+# Relevant docs that should not probably go on github
+book.pdf
 booksurvey.pdf
 LinuxKernelDevelopment.pdf
 The\ Linux\ Programming\ Interface-Michael\ Kerrisk.pdf
+Intel_Manual_64,32.pdf

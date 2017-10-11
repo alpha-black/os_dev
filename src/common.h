@@ -46,6 +46,31 @@ struct gdt_entry {
 }__attribute__((packed));
 
 
-void gdt_init();
+/****************************************************
+ *  IDT
+ *
+ ****************************************************/
+struct idt {
+    unsigned short  limit;
+    unsigned int    base;
+}__attribute__((packed));
+
+
+struct idt_entry {
+struct idt_entry_struct
+{
+    unsigned short  base_lo;    // The lower 16 bits of the address to jump to when this interrupt fires.
+    unsigned short  sel;        // Kernel segment selector.
+    unsigned char   always0;    // This must always be zero.
+    unsigned char   flags;      // More flags.
+    unsigned short  base_hi;    // The upper 16 bits of the address to jump to.
+}__attribute__((packed));
+
+
+/****************************************************
+ *  DT
+ *
+ ****************************************************/
+void descriptor_tables_init();
 
 #endif /* __COMMON_H__ */
