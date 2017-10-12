@@ -10,8 +10,9 @@
 #define FB_TYPE_HIGHER_BITS                 14
 #define FB_TYPE_LOWER_BITS                  15
 
-
-int kprintf(const char * message, int pos);
+unsigned int string_len(const char * string);
+void clear_screen();
+void kprintf(const char * message, ...);
 
 /****************************************************
  *  Serial Port
@@ -77,13 +78,21 @@ void descriptor_tables_init();
  *  ISR
  *  From James Malloy
  ****************************************************/
-struct isr_registers {
+struct interrupt_registers {
     unsigned int ds;                                        /* Data segment selector */
     unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;    /* Other registers. */
     unsigned int int_no, err_code;
     unsigned int eip, cs, eflags, useresp, ss;              /* Pushed by the processor. */
 }__attribute__((packed));
 
-void isr_handler(struct isr_registers reg);
+void interrupt_handler(struct interrupt_registers reg);
 
+/****************************************************
+ *  Programmable Interrupt Controller
+ *
+ ****************************************************/
+#define PIC_MASTER_COMMAND_PORT                 0x0020
+#define PIC_MASTER_DATA_PORT                    0x0021
+#define PIC_SLAVE_COMMAND_PORT                  0x00A0
+#define PIC_SLAVE_DATA_PORT                     0x00A1
 #endif /* __COMMON_H__ */

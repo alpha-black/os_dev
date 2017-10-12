@@ -43,11 +43,33 @@ static void idt_set_gate(struct idt_entry * entry, unsigned int offset, unsigned
     entry->flags = flag;
 }
 
+static void pic_remap()
+{
+    /* Master - Command 0x20, data 0x0021
+     * Slave - Command 0x00A0, data 0x00A1
+     * Initialize command - 0x11
+     **/
+    outb(PIC_MASTER_COMMAND_PORT, 0x11); outb(PIC_SLAVE_COMMAND_PORT, 0x11);
+
+    /* Remap PICs. Set vector offset to 0x20 and 0x28 */
+    outb(PIC_MASTER_DATA_PORT, 0x20); outb(PIC_SLAVE_DATA_PORT, 0x28);
+
+    /* PIC cascading info */
+    outb(PIC_MASTER_DATA_PORT, 0x04); outb(PIC_SLAVE_DATA_PORT, 0x02);
+    outb(PIC_MASTER_DATA_PORT, 0x01); outb(PIC_SLAVE_DATA_PORT, 0x01);
+    outb(PIC_MASTER_DATA_PORT, 0x00); outb(PIC_SLAVE_DATA_PORT, 0x00);
+
+}
+
 static void idt_init()
 {
-
     /* Code segment at 0x08, 0x8E (P=1, DPL=00b, S=0, type=1110b) */
     idt_set_gate(&idt_entries[0], (unsigned int)isr0, 0x08, 0x8E);
+
+    pic_remap();
+    idt_set_gate(&idt_entries[32], (unsigned int)irq0, 0x08, 0x8E);
+    idt_set_gate(&idt_entries[33], (unsigned int)irq1, 0x08, 0x8E);
+    idt_set_gate(&idt_entries[34], (unsigned int)irq2, 0x08, 0x8E);
 
     idt_ptr.base = (unsigned int)idt_entries;
     idt_ptr.limit = 8*256 - 1;

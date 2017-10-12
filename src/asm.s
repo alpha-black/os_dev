@@ -3,6 +3,8 @@ global inb
 global gdt_flush
 global idt_flush
 
+global pop_arg
+
 global trigger_int                                  ; for testing
 
 ; data - unsigned char  [esp + ]
@@ -24,6 +26,11 @@ inb:
 gdt_flush:
     mov eax, [esp + 4]
     lgdt [eax]                                      ; load GDT
+
+    mov eax, cr0
+    or al, 1
+    mov cr0, eax
+
     mov ax, 0x10
     mov ds, ax                                      ; GDT entries are 8 bytes. Kernel data starts at
                                                     ; 16 bytes = 0x10

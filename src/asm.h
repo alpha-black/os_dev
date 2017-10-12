@@ -26,10 +26,13 @@ extern void gdt_flush(unsigned int);
  ****************************************************/
 extern void idt_flush(unsigned int);
 /****************************************************
- *  ISR definitions defined in asm
+ *  ISR IRQ definitions defined in asm
  *
  ****************************************************/
 extern void isr0();
+extern void irq0();
+extern void irq1();
+extern void irq2();
 /****************************************************
  *  Trigger an interrupt, for testing
  *
