@@ -1,9 +1,7 @@
 OBJECTS = src/loader.o src/kmain.o src/asm.o src/serial.o src/descriptor_table.o src/interrupt.o src/interrupt_handler.o src/framebuffer.o
 CC = gcc
-CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-		-nostartfiles -nodefaultlibs -Wall -Wextra -c
-#CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-#		-nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+CFLAGS = -m32 -nostdlib -fno-builtin -fno-stack-protector \
+		-nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
 LDFLAGS = -T src/link.ld -melf_i386
 AS = nasm
 ASFLAGS = -f elf

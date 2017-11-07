@@ -5,12 +5,12 @@ int kmain(void)
 {
     descriptor_tables_init();
 
-    kprintf("%dWelcome!\n", 1);
+    kprintf("Welcome!\n");
 
     /* serial_init();
-    serial_write(SERIAL_COM1_BASE, 0x30);
+    serial_write(SERIAL_COM1_BASE, 0x30); */
 
-    trigger_int(); */
+    //trigger_int();
 
     return 0xDEADBABA;
 }

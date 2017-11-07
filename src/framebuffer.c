@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include "asm.h"
 #include "common.h"
 
@@ -27,13 +28,6 @@ static unsigned int _kprintf_int(int val, unsigned int pos)
     return pos+1;
 }
 
-unsigned int string_len(const char * string)
-{
-    unsigned int i = 0;
-    while(*(string+i) != '\0') i++;
-    return i+1;
-}
-
 void clear_screen()
 {
     for (int i = 0; i < 80*25; ++i) {
@@ -44,10 +38,12 @@ void clear_screen()
 void kprintf(const char * message, ...)
 {
     static unsigned int pos = 0;
-    int i = 0;
-    void * args = (void *)(message + string_len(message)+1);
+    va_list args;
+    int ival, i = 0;
 
     if (pos == 0) clear_screen();
+
+    va_start(args, message);
 
     while(*(message+i) != '\0') {
         if (*(message+i) == '\n') {
@@ -57,8 +53,8 @@ void kprintf(const char * message, ...)
             i++;
             switch(*(message+i)) {
                 case 'd':
-                    pos += _kprintf_int(*(int *)args, pos);
-                    //pos += _kprintf_int(10, pos);
+                    ival = va_arg(args, int);
+                    pos += _kprintf_int(ival, pos);
                     i++;
                     break;
                 default:

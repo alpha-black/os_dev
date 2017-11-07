@@ -47,8 +47,10 @@ static void pic_remap()
 {
     /* Master - Command 0x20, data 0x0021
      * Slave - Command 0x00A0, data 0x00A1
-     * Initialize command - 0x11
+     * Remeber masks and initialize command - 0x11
      **/
+    unsigned char mask1, mask2;
+    mask1 = inb(PIC_MASTER_DATA_PORT); mask2 = inb(PIC_SLAVE_DATA_PORT);
     outb(PIC_MASTER_COMMAND_PORT, 0x11); outb(PIC_SLAVE_COMMAND_PORT, 0x11);
 
     /* Remap PICs. Set vector offset to 0x20 and 0x28 */
@@ -57,7 +59,7 @@ static void pic_remap()
     /* PIC cascading info */
     outb(PIC_MASTER_DATA_PORT, 0x04); outb(PIC_SLAVE_DATA_PORT, 0x02);
     outb(PIC_MASTER_DATA_PORT, 0x01); outb(PIC_SLAVE_DATA_PORT, 0x01);
-    outb(PIC_MASTER_DATA_PORT, 0x00); outb(PIC_SLAVE_DATA_PORT, 0x00);
+    outb(PIC_MASTER_DATA_PORT, mask1); outb(PIC_SLAVE_DATA_PORT, mask2);
 
 }
 
